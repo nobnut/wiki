@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Wiki Express</title>
+    <style>
+        /* === MATERIAL 3 EXPRESSIVE DARK THEME === */
+        :root {
+            --md-sys-color-background: #1A1C19;
+            --md-sys-color-on-background: #E2E3DD;
+            --md-sys-color-surface: #2A2C29; 
+            --md-sys-color-on-surface: #E2E3DD;
+            --md-sys-color-surface-variant: #42493F;
+            --md-sys-color-on-surface-variant: #C2C9BD; 
+            --md-sys-color-primary: #9CD67D; 
+            --md-sys-color-on-primary: #0C3900;
+            --md-sys-color-primary-container: #265108;
+            --md-sys-color-error: #FFB4AB; 
+            --md-sys-color-error-container: #93000A;
+            --md-sys-color-outline: #8C9388;
+            
+            --radius-large: 28px;
+            --radius-medium: 16px;
+            --spacing: 12px;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: var(--md-sys-color-background);
+            color: var(--md-sys-color-on-background);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: var(--spacing);
+            padding-bottom: 80px;
+        }
+
+        .app-container {
+            background-color: var(--md-sys-color-surface);
+            border-radius: var(--radius-large);
+            padding: 24px;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            border: 1px solid var(--md-sys-color-outline);
+            flex: 1;
+        }
+
+        h1 { 
+            text-align: center; 
+            font-size: 24px; 
+            font-weight: 700; 
+            margin-top: 0;
+            margin-bottom: 24px; 
+            color: var(--md-sys-color-primary);
+        }
+
+        /* Search Bars */
+        .search-container {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        input[type="text"], input[type="search"] {
+            flex: 1;
+            background-color: var(--md-sys-color-background);
+            color: var(--md-sys-color-on-surface);
+            border: 1px solid var(--md-sys-color-outline);
+            padding: 12px 16px;
+            border-radius: 100px;
+            font-size: 16px;
+            outline: none;
+            width: 100%;
+        }
+
+        input[type="text"]:focus, input[type="search"]:focus {
+            border-color: var(--md-sys-color-primary);
+        }
+
+        /* Buttons */
+        .actions-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .btn { 
+            border: none; 
+            border-radius: 100px; 
+            font-weight: 600; 
+            font-size: 14px; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 10px 20px;
+            flex: 1;
+            min-width: 110px;
+            transition: opacity 0.2s;
+        }
+
+        .btn:active { opacity: 0.8; }
+        .btn:disabled { opacity: 0.5; pointer-events: none; }
+        
+        .btn-primary { background-color: var(--md-sys-color-primary-container); color: var(--md-sys-color-primary); flex: 0 0 auto; }
+        .btn-surface { background-color: var(--md-sys-color-background); color: var(--md-sys-color-on-surface); border: 1px solid var(--md-sys-color-outline); }
+
+        /* Article Content */
+        #article-container { display: flex; flex-direction: column; gap: 16px; }
+        #article-title { margin: 0; font-size: 22px; color: var(--md-sys-color-on-surface); }
+        #article-image { width: 100%; max-height: 250px; object-fit: cover; border-radius: var(--radius-medium); display: none; }
+        #article-extract { line-height: 1.6; color: var(--md-sys-color-on-surface-variant); font-size: 16px; }
+
+        /* Bookmarks Filtering & List */
+        .filter-section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .tag-scroll-row {
+            display: flex;
+            overflow-x: auto;
+            gap: 8px;
+            padding-bottom: 8px;
+            scrollbar-width: none; 
+        }
+        .tag-scroll-row::-webkit-scrollbar { display: none; }
+
+        .filter-tag {
+            background-color: var(--md-sys-color-surface-variant);
+            color: var(--md-sys-color-on-surface-variant);
+            border: 1px solid var(--md-sys-color-outline);
+            padding: 6px 16px;
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .filter-tag.active {
+            background-color: var(--md-sys-color-primary-container);
+            color: var(--md-sys-color-primary);
+            border-color: var(--md-sys-color-primary);
+        }
+
+        .bookmark-card {
+            display: flex;
+            gap: 16px;
+            background-color: var(--md-sys-color-background);
+            border: 1px solid var(--md-sys-color-outline);
+            border-radius: var(--radius-medium);
+            padding: 12px;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .bookmark-img { width: 70px; height: 70px; border-radius: 10px; object-fit: cover; flex-shrink: 0; background-color: var(--md-sys-color-surface-variant); }
+        .bookmark-content { flex: 1; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+        .bookmark-title { margin: 0 0 4px 0; font-size: 16px; font-weight: 600; color: var(--md-sys-color-on-surface); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .bookmark-note { margin: 0 0 8px 0; font-size: 13px; color: var(--md-sys-color-on-surface-variant); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .bookmark-tag { align-self: flex-start; background-color: var(--md-sys-color-primary-container); color: var(--md-sys-color-primary); padding: 2px 8px; border-radius: 8px; font-size: 11px; font-weight: bold; }
+        .delete-btn { position: absolute; top: 12px; right: 12px; background: none; border: none; color: var(--md-sys-color-error); font-size: 18px; padding: 4px; cursor: pointer; }
+
+        /* Bottom Nav */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background-color: var(--md-sys-color-surface); border-top: 1px solid var(--md-sys-color-outline); display: flex; padding: 12px; gap: 12px; justify-content: center; z-index: 100; }
+
+        /* Modal */
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 200; }
+        .modal { background: var(--md-sys-color-surface); padding: 24px; border-radius: var(--radius-large); width: 90%; max-width: 400px; border: 1px solid var(--md-sys-color-outline); }
+        .modal h3 { margin-top: 0; color: var(--md-sys-color-primary); }
+        .modal input { width: 100%; margin-bottom: 12px; box-sizing: border-box; }
+        .modal-actions { display: flex; gap: 8px; margin-top: 16px; }
+
+        /* Spinner */
+        .spinner-container { display: flex; justify-content: center; padding: 40px 0; }
+        .spinner { border: 4px solid rgba(156, 214, 125, 0.1); width: 36px; height: 36px; border-radius: 50%; border-left-color: var(--md-sys-color-primary); animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        .hidden { display: none !important; }
+    </style>
+    <!-- Link to the manifest file -->
+<link rel="manifest" href="./manifest.json">
+
+<!-- Register the Service Worker -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js')
+        .then(registration => {
+          console.log('Service Worker registered successfully');
+        })
+        .catch(error => {
+          console.log('Service Worker registration failed:', error);
+        });
+    });
+  }
+</script>
+
+</head>
+<body>
+    
+    <!-- MAIN APP VIEW -->
+    <div id="view-discover" class="app-container">
+        <h1>Wiki Express</h1>
+        <div class="search-container">
+            <input type="search" id="searchInput" placeholder="Search a topic..." onkeypress="handleKeyPress(event)">
+            <button class="btn btn-primary" onclick="searchArticle()">Search</button>
+        </div>
+        <div class="actions-row">
+            <button class="btn btn-surface" onclick="fetchRandom()">🎲 Random</button>
+            <button class="btn btn-surface" id="fullArticleBtn" onclick="openFullArticle()" disabled>Full Article</button>
+            <button class="btn btn-surface" id="saveArticleBtn" onclick="openSaveModal()" disabled>💾 Save</button>
+        </div>
+        <div id="spinner" class="spinner-container"><div class="spinner"></div></div>
+        <div id="article-container" class="hidden">
+            <h2 id="article-title"></h2>
+            <img id="article-image" src="" alt="Article feature image">
+            <div id="article-extract"></div>
+        </div>
+    </div>
+
+    <!-- BOOKMARKS VIEW -->
+    <div id="view-bookmarks" class="app-container hidden">
+        <h1>Reading List</h1>
+        <div class="actions-row">
+            <button class="btn btn-surface" onclick="exportBookmarks()">Export Backup</button>
+            <input type="file" id="importFile" class="hidden" accept=".json" onchange="importBookmarks(event)">
+            <button class="btn btn-surface" onclick="document.getElementById('importFile').click()">Import Backup</button>
+        </div>
+        
+        <!-- NEW FILTERING SECTION -->
+        <div class="filter-section">
+            <input type="search" id="bookmarkSearchInput" placeholder="Search saved articles..." oninput="handleBookmarkSearch()">
+            <div id="tag-scroll-row" class="tag-scroll-row">
+                <!-- Tags populated via JS -->
+            </div>
+        </div>
+
+        <hr style="border-color: var(--md-sys-color-outline); margin-bottom: 16px; margin-top: 0;">
+        <div id="bookmarks-list"></div>
+    </div>
+
+    <!-- BOTTOM NAVIGATION -->
+    <div class="bottom-nav">
+        <button class="btn btn-primary" id="nav-discover" onclick="switchView('discover')">🔍 Discover</button>
+        <button class="btn btn-surface" id="nav-bookmarks" onclick="switchView('bookmarks')">📚 Bookmarks</button>
+    </div>
+
+    <!-- SAVE MODAL -->
+    <div id="save-modal" class="modal-overlay hidden">
+        <div class="modal">
+            <h3>Save to Reading List</h3>
+            <input type="text" id="modal-tag" placeholder="Add a #tag (e.g., #history)">
+            <input type="text" id="modal-note" placeholder="Short note or description...">
+            <div class="modal-actions">
+                <button class="btn btn-surface" onclick="closeSaveModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="confirmSave()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const BASE_REST_URL = "https://en.wikipedia.org/api/rest_v1";
+        let currentArticleData = null; 
+        let activeTagFilter = null; 
+
+        /* === CORE WIKI FUNCTIONS === */
+        function formatSearchTerm(term) { return term ? term.charAt(0).toUpperCase() + term.slice(1) : ""; }
+
+        function showLoading() {
+            document.getElementById('spinner').classList.remove('hidden');
+            document.getElementById('article-container').classList.add('hidden');
+            document.getElementById('fullArticleBtn').disabled = true;
+            document.getElementById('saveArticleBtn').disabled = true;
+        }
+
+        function displayArticle(data) {
+            document.getElementById('spinner').classList.add('hidden');
+            if (data.type === "https://mediawiki.org/wiki/HyperSwitch/errors/not_found") {
+                document.getElementById('article-title').innerText = "Not Found";
+                document.getElementById('article-extract').innerText = "Sorry, no simplified article summary could be found.";
+                document.getElementById('article-image').style.display = "none";
+                document.getElementById('article-container').classList.remove('hidden');
+                return;
+            }
+            currentArticleData = { title: data.title, extract: data.extract_html, url: data.content_urls.mobile.page, imageUrl: (data.thumbnail && data.thumbnail.source) ? data.thumbnail.source : null };
+            document.getElementById('article-title').innerText = data.title;
+            document.getElementById('article-extract').innerHTML = data.extract_html;
+            document.getElementById('fullArticleBtn').disabled = false;
+            document.getElementById('saveArticleBtn').disabled = false;
+            const imgElement = document.getElementById('article-image');
+            if (currentArticleData.imageUrl) { imgElement.src = currentArticleData.imageUrl; imgElement.style.display = "block"; } else { imgElement.style.display = "none"; }
+            document.getElementById('article-container').classList.remove('hidden');
+        }
+
+        async function fetchFeatured() {
+            showLoading();
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            try { const response = await fetch(`${BASE_REST_URL}/feed/featured/${year}/${month}/${day}`); const data = await response.json(); if (data.tfa) displayArticle(data.tfa); else fetchRandom(); } catch (error) { fetchRandom(); }
+        }
+
+        async function fetchRandom() {
+            showLoading();
+            try { const response = await fetch(`${BASE_REST_URL}/page/random/summary`); const data = await response.json(); displayArticle(data); } catch (error) { console.error("Error:", error); }
+        }
+
+        async function searchArticle(term = null) {
+            const input = term || document.getElementById('searchInput').value.trim();
+            if (!input) return;
+            showLoading();
+            const formattedTerm = formatSearchTerm(input);
+            try { const response = await fetch(`${BASE_REST_URL}/page/summary/${encodeURIComponent(formattedTerm)}`); const data = await response.json(); displayArticle(data); } catch (error) { console.error("Error:", error); }
+        }
+
+        function openFullArticle() { if (currentArticleData && currentArticleData.url) window.location.href = currentArticleData.url; }
+        function handleKeyPress(event) { if (event.key === 'Enter') { searchArticle(); document.getElementById('searchInput').blur(); } }
+
+        /* === BOOKMARKING & FILTERING SYSTEM === */
+        function getBookmarks() { const saved = localStorage.getItem('wikiBookmarks'); return saved ? JSON.parse(saved) : []; }
+        function setBookmarks(bookmarks) { localStorage.setItem('wikiBookmarks', JSON.stringify(bookmarks)); }
+
+        function openSaveModal() { document.getElementById('save-modal').classList.remove('hidden'); }
+        function closeSaveModal() { document.getElementById('save-modal').classList.add('hidden'); document.getElementById('modal-tag').value = ''; document.getElementById('modal-note').value = ''; }
+
+        function confirmSave() {
+            const tagInput = document.getElementById('modal-tag').value.trim();
+            const tag = tagInput ? (tagInput.startsWith('#') ? tagInput : '#' + tagInput) : '#untagged';
+            const note = document.getElementById('modal-note').value.trim();
+            const newBookmark = { id: Date.now().toString(), title: currentArticleData.title, tag: tag, note: note, imageUrl: currentArticleData.imageUrl };
+            const bookmarks = getBookmarks();
+            bookmarks.unshift(newBookmark);
+            setBookmarks(bookmarks);
+            closeSaveModal();
+            updateTagCarousel();
+            renderBookmarks();
+            alert('Article saved to Reading List!');
+        }
+
+        function deleteBookmark(id) {
+            if(confirm("Remove this article from your list?")) {
+                let bookmarks = getBookmarks();
+                bookmarks = bookmarks.filter(b => b.id !== id);
+                setBookmarks(bookmarks);
+                updateTagCarousel();
+                renderBookmarks();
+            }
+        }
+
+        function loadBookmarkToView(title) { switchView('discover'); searchArticle(title); }
+
+        function handleBookmarkSearch() {
+            const searchVal = document.getElementById('bookmarkSearchInput').value;
+            // Automatically unselect any active tag when the user starts typing to search globally
+            if (searchVal.trim() !== '') {
+                activeTagFilter = null;
+                updateTagCarousel();
+            }
+            renderBookmarks();
+        }
+
+        function updateTagCarousel() {
+            const bookmarks = getBookmarks();
+            const scrollRow = document.getElementById('tag-scroll-row');
+            scrollRow.innerHTML = ''; 
+
+            if (bookmarks.length === 0) return;
+
+            const uniqueTags = [...new Set(bookmarks.map(b => b.tag))].sort();
+
+            if (activeTagFilter && !uniqueTags.includes(activeTagFilter)) {
+                activeTagFilter = null;
+            }
+
+            // ADDED: The "All" Button
+            const allBtn = document.createElement('button');
+            allBtn.className = `filter-tag ${!activeTagFilter ? 'active' : ''}`;
+            allBtn.innerText = 'All';
+            allBtn.onclick = () => {
+                activeTagFilter = null;
+                document.getElementById('bookmarkSearchInput').value = ''; 
+                updateTagCarousel();
+                renderBookmarks();
+            };
+            scrollRow.appendChild(allBtn);
+
+            // Populate unique tags
+            uniqueTags.forEach(tag => {
+                const btn = document.createElement('button');
+                btn.className = `filter-tag ${activeTagFilter === tag ? 'active' : ''}`;
+                btn.innerText = tag;
+                btn.onclick = () => {
+                    activeTagFilter = tag; 
+                    document.getElementById('bookmarkSearchInput').value = ''; // Clears search when picking a tag
+                    updateTagCarousel();
+                    renderBookmarks();
+                };
+                scrollRow.appendChild(btn);
+            });
+        }
+
+        function renderBookmarks() {
+            const allBookmarks = getBookmarks();
+            const listContainer = document.getElementById('bookmarks-list');
+            const searchText = document.getElementById('bookmarkSearchInput').value.toLowerCase();
+            listContainer.innerHTML = '';
+
+            const filteredBookmarks = allBookmarks.filter(bookmark => {
+                const matchesSearch = !searchText || 
+                    bookmark.title.toLowerCase().includes(searchText) || 
+                    (bookmark.note && bookmark.note.toLowerCase().includes(searchText)) ||
+                    bookmark.tag.toLowerCase().includes(searchText);
+                
+                const matchesTag = !activeTagFilter || bookmark.tag === activeTagFilter;
+
+                return matchesSearch && matchesTag;
+            });
+
+            if (allBookmarks.length === 0) {
+                listContainer.innerHTML = '<p style="text-align:center; color: var(--md-sys-color-on-surface-variant);">Your reading list is empty.</p>';
+                return;
+            }
+
+            if (filteredBookmarks.length === 0) {
+                listContainer.innerHTML = '<p style="text-align:center; color: var(--md-sys-color-on-surface-variant);">No articles match your search or filter.</p>';
+                return;
+            }
+
+            filteredBookmarks.forEach(bookmark => {
+                const card = document.createElement('div');
+                card.className = 'bookmark-card';
+                const contentHtml = `
+                    ${bookmark.imageUrl ? `<img src="${bookmark.imageUrl}" class="bookmark-img">` : `<div class="bookmark-img" style="display:flex;align-items:center;justify-content:center;font-size:24px;">📄</div>`}
+                    <div class="bookmark-content" onclick="loadBookmarkToView('${bookmark.title}')" style="cursor:pointer;">
+                        <h4 class="bookmark-title">${bookmark.title}</h4>
+                        ${bookmark.note ? `<p class="bookmark-note">${bookmark.note}</p>` : ''}
+                        <span class="bookmark-tag">${bookmark.tag}</span>
+                    </div>
+                    <button class="delete-btn" onclick="deleteBookmark('${bookmark.id}')">✕</button>
+                `;
+                card.innerHTML = contentHtml;
+                listContainer.appendChild(card);
+            });
+        }
+
+        /* === DATA BACKUP === */
+        function exportBookmarks() {
+            const dataStr = JSON.stringify(getBookmarks());
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', 'wiki_reading_list.json');
+            linkElement.click();
+        }
+
+        function importBookmarks(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    if (Array.isArray(importedData)) {
+                        setBookmarks(importedData);
+                        updateTagCarousel();
+                        renderBookmarks();
+                        alert("Reading list successfully imported!");
+                    } else alert("Invalid file format.");
+                } catch (error) { alert("Error reading backup file."); }
+            };
+            reader.readAsText(file);
+            event.target.value = ''; 
+        }
+
+        /* === NAVIGATION === */
+        function switchView(view) {
+            const discoverView = document.getElementById('view-discover');
+            const bookmarksView = document.getElementById('view-bookmarks');
+            const navDiscover = document.getElementById('nav-discover');
+            const navBookmarks = document.getElementById('nav-bookmarks');
+
+            if (view === 'discover') {
+                discoverView.classList.remove('hidden');
+                bookmarksView.classList.add('hidden');
+                navDiscover.className = 'btn btn-primary';
+                navBookmarks.className = 'btn btn-surface';
+            } else {
+                discoverView.classList.add('hidden');
+                bookmarksView.classList.remove('hidden');
+                navBookmarks.className = 'btn btn-primary';
+                navDiscover.className = 'btn btn-surface';
+                
+                updateTagCarousel();
+                renderBookmarks(); 
+            }
+        }
+
+        window.onload = function() {
+            fetchFeatured();
+            updateTagCarousel();
+            renderBookmarks();
+        };
+    </script>
+</body>
+</html>
