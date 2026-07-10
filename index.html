@@ -50,64 +50,18 @@
             flex: 1;
         }
 
-        h1 { 
-            text-align: center; 
-            font-size: 24px; 
-            font-weight: 700; 
-            margin-top: 0;
-            margin-bottom: 24px; 
-            color: var(--md-sys-color-primary);
-        }
+        h1 { text-align: center; font-size: 24px; font-weight: 700; margin-top: 0; margin-bottom: 24px; color: var(--md-sys-color-primary); }
 
         /* Search Bars */
-        .search-container {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 16px;
-        }
-
-        input[type="text"], input[type="search"] {
-            flex: 1;
-            background-color: var(--md-sys-color-background);
-            color: var(--md-sys-color-on-surface);
-            border: 1px solid var(--md-sys-color-outline);
-            padding: 12px 16px;
-            border-radius: 100px;
-            font-size: 16px;
-            outline: none;
-            width: 100%;
-        }
-
-        input[type="text"]:focus, input[type="search"]:focus {
-            border-color: var(--md-sys-color-primary);
-        }
+        .search-container { display: flex; gap: 8px; margin-bottom: 16px; }
+        input[type="text"], input[type="search"] { flex: 1; background-color: var(--md-sys-color-background); color: var(--md-sys-color-on-surface); border: 1px solid var(--md-sys-color-outline); padding: 12px 16px; border-radius: 100px; font-size: 16px; outline: none; width: 100%; }
+        input[type="text"]:focus, input[type="search"]:focus { border-color: var(--md-sys-color-primary); }
 
         /* Buttons */
-        .actions-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-
-        .btn { 
-            border: none; 
-            border-radius: 100px; 
-            font-weight: 600; 
-            font-size: 14px; 
-            cursor: pointer; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            padding: 10px 20px;
-            flex: 1;
-            min-width: 110px;
-            transition: opacity 0.2s;
-        }
-
+        .actions-row { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; }
+        .btn { border: none; border-radius: 100px; font-weight: 600; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 10px 20px; flex: 1; min-width: 110px; transition: opacity 0.2s; }
         .btn:active { opacity: 0.8; }
         .btn:disabled { opacity: 0.5; pointer-events: none; }
-        
         .btn-primary { background-color: var(--md-sys-color-primary-container); color: var(--md-sys-color-primary); flex: 0 0 auto; }
         .btn-surface { background-color: var(--md-sys-color-background); color: var(--md-sys-color-on-surface); border: 1px solid var(--md-sys-color-outline); }
 
@@ -118,52 +72,14 @@
         #article-extract { line-height: 1.6; color: var(--md-sys-color-on-surface-variant); font-size: 16px; }
 
         /* Bookmarks Filtering & List */
-        .filter-section {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-
-        .tag-scroll-row {
-            display: flex;
-            overflow-x: auto;
-            gap: 8px;
-            padding-bottom: 8px;
-            scrollbar-width: none; 
-        }
+        .filter-section { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
+        .tag-scroll-row { display: flex; overflow-x: auto; gap: 8px; padding-bottom: 8px; scrollbar-width: none; }
         .tag-scroll-row::-webkit-scrollbar { display: none; }
+        .filter-tag { background-color: var(--md-sys-color-surface-variant); color: var(--md-sys-color-on-surface-variant); border: 1px solid var(--md-sys-color-outline); padding: 6px 16px; border-radius: 100px; font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
+        .filter-tag.active { background-color: var(--md-sys-color-primary-container); color: var(--md-sys-color-primary); border-color: var(--md-sys-color-primary); }
 
-        .filter-tag {
-            background-color: var(--md-sys-color-surface-variant);
-            color: var(--md-sys-color-on-surface-variant);
-            border: 1px solid var(--md-sys-color-outline);
-            padding: 6px 16px;
-            border-radius: 100px;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: all 0.2s;
-        }
-
-        .filter-tag.active {
-            background-color: var(--md-sys-color-primary-container);
-            color: var(--md-sys-color-primary);
-            border-color: var(--md-sys-color-primary);
-        }
-
-        .bookmark-card {
-            display: flex;
-            gap: 16px;
-            background-color: var(--md-sys-color-background);
-            border: 1px solid var(--md-sys-color-outline);
-            border-radius: var(--radius-medium);
-            padding: 12px;
-            margin-bottom: 12px;
-            position: relative;
-        }
-
+        /* Cards (Used for Bookmarks & Search Results) */
+        .bookmark-card { display: flex; gap: 16px; background-color: var(--md-sys-color-background); border: 1px solid var(--md-sys-color-outline); border-radius: var(--radius-medium); padding: 12px; margin-bottom: 12px; position: relative; }
         .bookmark-img { width: 70px; height: 70px; border-radius: 10px; object-fit: cover; flex-shrink: 0; background-color: var(--md-sys-color-surface-variant); }
         .bookmark-content { flex: 1; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
         .bookmark-title { margin: 0 0 4px 0; font-size: 16px; font-weight: 600; color: var(--md-sys-color-on-surface); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -171,10 +87,8 @@
         .bookmark-tag { align-self: flex-start; background-color: var(--md-sys-color-primary-container); color: var(--md-sys-color-primary); padding: 2px 8px; border-radius: 8px; font-size: 11px; font-weight: bold; }
         .delete-btn { position: absolute; top: 12px; right: 12px; background: none; border: none; color: var(--md-sys-color-error); font-size: 18px; padding: 4px; cursor: pointer; }
 
-        /* Bottom Nav */
+        /* Bottom Nav & Modals */
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background-color: var(--md-sys-color-surface); border-top: 1px solid var(--md-sys-color-outline); display: flex; padding: 12px; gap: 12px; justify-content: center; z-index: 100; }
-
-        /* Modal */
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 200; }
         .modal { background: var(--md-sys-color-surface); padding: 24px; border-radius: var(--radius-large); width: 90%; max-width: 400px; border: 1px solid var(--md-sys-color-outline); }
         .modal h3 { margin-top: 0; color: var(--md-sys-color-primary); }
@@ -185,7 +99,6 @@
         .spinner-container { display: flex; justify-content: center; padding: 40px 0; }
         .spinner { border: 4px solid rgba(156, 214, 125, 0.1); width: 36px; height: 36px; border-radius: 50%; border-left-color: var(--md-sys-color-primary); animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
-        
         .hidden { display: none !important; }
     </style>
     <!-- Link to the manifest file -->
@@ -221,7 +134,15 @@
             <button class="btn btn-surface" id="fullArticleBtn" onclick="openFullArticle()" disabled>Full Article</button>
             <button class="btn btn-surface" id="saveArticleBtn" onclick="openSaveModal()" disabled>💾 Save</button>
         </div>
+        
         <div id="spinner" class="spinner-container"><div class="spinner"></div></div>
+        
+        <!-- NEW SEARCH RESULTS CONTAINER -->
+        <div id="search-results-container" class="hidden">
+            <h3 style="color: var(--md-sys-color-primary); margin-top: 0; margin-bottom: 16px;">Did you mean...</h3>
+            <div id="search-results-list"></div>
+        </div>
+
         <div id="article-container" class="hidden">
             <h2 id="article-title"></h2>
             <img id="article-image" src="" alt="Article feature image">
@@ -238,14 +159,10 @@
             <button class="btn btn-surface" onclick="document.getElementById('importFile').click()">Import Backup</button>
         </div>
         
-        <!-- NEW FILTERING SECTION -->
         <div class="filter-section">
             <input type="search" id="bookmarkSearchInput" placeholder="Search saved articles..." oninput="handleBookmarkSearch()">
-            <div id="tag-scroll-row" class="tag-scroll-row">
-                <!-- Tags populated via JS -->
-            </div>
+            <div id="tag-scroll-row" class="tag-scroll-row"></div>
         </div>
-
         <hr style="border-color: var(--md-sys-color-outline); margin-bottom: 16px; margin-top: 0;">
         <div id="bookmarks-list"></div>
     </div>
@@ -280,19 +197,20 @@
         function showLoading() {
             document.getElementById('spinner').classList.remove('hidden');
             document.getElementById('article-container').classList.add('hidden');
+            document.getElementById('search-results-container').classList.add('hidden');
             document.getElementById('fullArticleBtn').disabled = true;
             document.getElementById('saveArticleBtn').disabled = true;
         }
 
-        function displayArticle(data) {
+        function displayArticle(data, originalSearchTerm = "") {
             document.getElementById('spinner').classList.add('hidden');
-            if (data.type === "https://mediawiki.org/wiki/HyperSwitch/errors/not_found") {
-                document.getElementById('article-title').innerText = "Not Found";
-                document.getElementById('article-extract').innerText = "Sorry, no simplified article summary could be found.";
-                document.getElementById('article-image').style.display = "none";
-                document.getElementById('article-container').classList.remove('hidden');
+            
+            // Intercept Not Found or Disambiguation pages and trigger the search fallback
+            if (data.type === "https://mediawiki.org/wiki/HyperSwitch/errors/not_found" || data.type === "disambiguation") {
+                fetchSearchResults(originalSearchTerm);
                 return;
             }
+
             currentArticleData = { title: data.title, extract: data.extract_html, url: data.content_urls.mobile.page, imageUrl: (data.thumbnail && data.thumbnail.source) ? data.thumbnail.source : null };
             document.getElementById('article-title').innerText = data.title;
             document.getElementById('article-extract').innerHTML = data.extract_html;
@@ -301,6 +219,88 @@
             const imgElement = document.getElementById('article-image');
             if (currentArticleData.imageUrl) { imgElement.src = currentArticleData.imageUrl; imgElement.style.display = "block"; } else { imgElement.style.display = "none"; }
             document.getElementById('article-container').classList.remove('hidden');
+        }
+
+        /* === NEW: SEARCH FALLBACK SYSTEM === */
+        async function fetchSearchResults(query) {
+            try {
+                // Using Wikipedia's core Search API for fuzzy matching
+                const response = await fetch(`https://en.wikipedia.org/w/rest.php/v1/search/page?q=${encodeURIComponent(query)}&limit=8`);
+                const data = await response.json();
+                renderSearchResults(data.pages, query);
+            } catch (error) {
+                console.error("Search API error:", error);
+                document.getElementById('article-title').innerText = "Network Error";
+                document.getElementById('article-extract').innerText = "Please check your connection and try again.";
+                document.getElementById('article-container').classList.remove('hidden');
+            }
+        }
+
+        function renderSearchResults(pages, query) {
+            const listContainer = document.getElementById('search-results-list');
+            listContainer.innerHTML = '';
+
+            // Filter out the disambiguation pages themselves to get straight to the facts
+            const validPages = (pages || []).filter(page => {
+                const desc = page.description ? page.description.toLowerCase() : "";
+                return !desc.includes("disambiguation");
+            });
+
+            if (validPages.length === 0) {
+                document.getElementById('article-title').innerText = "Not Found";
+                document.getElementById('article-extract').innerText = `Sorry, we couldn't find any articles matching "${query}".`;
+                document.getElementById('article-image').style.display = "none";
+                document.getElementById('article-container').classList.remove('hidden');
+                return;
+            }
+
+            validPages.forEach(page => {
+                const card = document.createElement('div');
+                card.className = 'bookmark-card';
+                card.style.cursor = 'pointer';
+                card.onclick = () => {
+                    document.getElementById('searchInput').value = page.title;
+                    searchArticle(page.title); // Instantly load the exact matched title
+                };
+
+                // Clean up the text for the preview
+                let cleanExcerpt = page.excerpt ? page.excerpt.replace(/(<([^>]+)>)/gi, "") : "Click to view article.";
+                const descText = page.description || cleanExcerpt;
+                
+                let imgUrl = null;
+                if (page.thumbnail) {
+                    imgUrl = page.thumbnail.url || page.thumbnail.source;
+                    if (imgUrl && imgUrl.startsWith('//')) imgUrl = 'https:' + imgUrl;
+                }
+
+                const contentHtml = `
+                    ${imgUrl ? `<img src="${imgUrl}" class="bookmark-img">` : `<div class="bookmark-img" style="display:flex;align-items:center;justify-content:center;font-size:24px;">🔍</div>`}
+                    <div class="bookmark-content">
+                        <h4 class="bookmark-title">${page.title}</h4>
+                        <p class="bookmark-note">${descText}</p>
+                    </div>
+                `;
+                card.innerHTML = contentHtml;
+                listContainer.appendChild(card);
+            });
+
+            document.getElementById('search-results-container').classList.remove('hidden');
+        }
+
+        /* === UPDATED SEARCH FUNCTION === */
+        async function searchArticle(term = null) {
+            const input = term || document.getElementById('searchInput').value.trim();
+            if (!input) return;
+            showLoading();
+            const formattedTerm = formatSearchTerm(input);
+            try { 
+                const response = await fetch(`${BASE_REST_URL}/page/summary/${encodeURIComponent(formattedTerm)}`); 
+                const data = await response.json(); 
+                displayArticle(data, input); 
+            } catch (error) { 
+                console.error("Error:", error); 
+                fetchSearchResults(input); // Trigger fallback on error
+            }
         }
 
         async function fetchFeatured() {
@@ -315,14 +315,6 @@
         async function fetchRandom() {
             showLoading();
             try { const response = await fetch(`${BASE_REST_URL}/page/random/summary`); const data = await response.json(); displayArticle(data); } catch (error) { console.error("Error:", error); }
-        }
-
-        async function searchArticle(term = null) {
-            const input = term || document.getElementById('searchInput').value.trim();
-            if (!input) return;
-            showLoading();
-            const formattedTerm = formatSearchTerm(input);
-            try { const response = await fetch(`${BASE_REST_URL}/page/summary/${encodeURIComponent(formattedTerm)}`); const data = await response.json(); displayArticle(data); } catch (error) { console.error("Error:", error); }
         }
 
         function openFullArticle() { if (currentArticleData && currentArticleData.url) window.location.href = currentArticleData.url; }
@@ -363,7 +355,6 @@
 
         function handleBookmarkSearch() {
             const searchVal = document.getElementById('bookmarkSearchInput').value;
-            // Automatically unselect any active tag when the user starts typing to search globally
             if (searchVal.trim() !== '') {
                 activeTagFilter = null;
                 updateTagCarousel();
@@ -384,7 +375,6 @@
                 activeTagFilter = null;
             }
 
-            // ADDED: The "All" Button
             const allBtn = document.createElement('button');
             allBtn.className = `filter-tag ${!activeTagFilter ? 'active' : ''}`;
             allBtn.innerText = 'All';
@@ -396,14 +386,13 @@
             };
             scrollRow.appendChild(allBtn);
 
-            // Populate unique tags
             uniqueTags.forEach(tag => {
                 const btn = document.createElement('button');
                 btn.className = `filter-tag ${activeTagFilter === tag ? 'active' : ''}`;
                 btn.innerText = tag;
                 btn.onclick = () => {
                     activeTagFilter = tag; 
-                    document.getElementById('bookmarkSearchInput').value = ''; // Clears search when picking a tag
+                    document.getElementById('bookmarkSearchInput').value = '';
                     updateTagCarousel();
                     renderBookmarks();
                 };
@@ -424,7 +413,6 @@
                     bookmark.tag.toLowerCase().includes(searchText);
                 
                 const matchesTag = !activeTagFilter || bookmark.tag === activeTagFilter;
-
                 return matchesSearch && matchesTag;
             });
 
