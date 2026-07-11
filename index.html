@@ -237,7 +237,7 @@ document.getElementById('article-title').innerText = cleanTitle;
             }
         }
 
-        function renderSearchResults(pages, query) {
+                function renderSearchResults(pages, query) {
             const listContainer = document.getElementById('search-results-list');
             listContainer.innerHTML = '';
 
@@ -259,10 +259,56 @@ document.getElementById('article-title').innerText = cleanTitle;
                 const card = document.createElement('div');
                 card.className = 'bookmark-card';
                 card.style.cursor = 'pointer';
-                card.onclick = () => {
-                    document.getElementById('searchInput').value = page.title;
-                    searchArticle(page.title); // Instantly load the exact matched title
+                
+                // === NEW LONG CLICK LOGIC ===
+                let pressTimer;
+                let isLongPress = false;
+
+                const startPress = () => {
+                    isLongPress = false;
+                    pressTimer = setTimeout(() => {
+                        isLongPress = true;
+                        
+                        // Show confirmation dialog to prevent accidental saves
+                        if (confirm(`Save "${page.title}" to your reading list?`)) {
+                            // Format image URL if one exists
+                            let imgUrl = null;
+                            if (page.thumbnail) {
+                                imgUrl = page.thumbnail.url || page.thumbnail.source;
+                                if (imgUrl && imgUrl.startsWith('//')) imgUrl = 'https:' + imgUrl;
+                            }
+                            
+                            // Temporarily set currentArticleData so the save modal populates correctly
+                            currentArticleData = { 
+                                title: page.title, 
+                                imageUrl: imgUrl 
+                            };
+                            
+                            // Trigger the standard save modal flow
+                            openSaveModal();
+                        }
+                    }, 800); // 800ms threshold for a long click
                 };
+
+                const cancelPress = () => clearTimeout(pressTimer);
+
+                // Listeners for both mouse (desktop) and touch (mobile)
+                card.addEventListener('mousedown', startPress);
+                card.addEventListener('touchstart', startPress, {passive: true});
+                card.addEventListener('mouseup', cancelPress);
+                card.addEventListener('mouseleave', cancelPress);
+                card.addEventListener('touchend', cancelPress);
+
+                // Updated click handler to ignore clicks that were actually long presses
+                card.onclick = (e) => {
+                    if (isLongPress) {
+                        e.preventDefault();
+                        return;
+                    }
+                    document.getElementById('searchInput').value = page.title;
+                    searchArticle(page.title); 
+                };
+                // ============================
 
                 // Clean up the text for the preview
                 let cleanExcerpt = page.excerpt ? page.excerpt.replace(/(<([^>]+)>)/gi, "") : "Click to view article.";
@@ -275,7 +321,7 @@ document.getElementById('article-title').innerText = cleanTitle;
                 }
 
                 const contentHtml = `
-                    ${imgUrl ? `<img src="${imgUrl}" class="bookmark-img">` : `<div class="bookmark-img" style="display:flex;align-items:center;justify-content:center;font-size:24px;">🔍</div>`}
+                    ${imgUrl ? `<img src="${imgUrl}" class="bookmark-img">` : `<div class="bookmark-img" style="display:flex;align-items:center;justify-content:center;font-size:24px;">📚</div>`}
                     <div class="bookmark-content">
                         <h4 class="bookmark-title">${page.title}</h4>
                         <p class="bookmark-note">${descText}</p>
