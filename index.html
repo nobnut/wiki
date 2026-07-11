@@ -324,7 +324,14 @@
         function getBookmarks() { const saved = localStorage.getItem('wikiBookmarks'); return saved ? JSON.parse(saved) : []; }
         function setBookmarks(bookmarks) { localStorage.setItem('wikiBookmarks', JSON.stringify(bookmarks)); }
 
-        function openSaveModal() { document.getElementById('save-modal').classList.remove('hidden'); }
+function openSaveModal() { 
+    document.getElementById('save-modal').classList.remove('hidden'); 
+    
+    // Automatically populate the description field and replace underscores with spaces
+    if (currentArticleData && currentArticleData.title) {
+        document.getElementById('modal-note').value = currentArticleData.title.replaceAll('_', ' ');
+    }
+}
         function closeSaveModal() { document.getElementById('save-modal').classList.add('hidden'); document.getElementById('modal-tag').value = ''; document.getElementById('modal-note').value = ''; }
 
         function confirmSave() {
